@@ -48,7 +48,8 @@ class GifPlayerContainer extends React.Component {
         ? nextStill
         : prevState.actualStill,
       isToggle: nextProps.isToggle,
-      onPlayEnd: nextProps.onPlayEnd
+      onPlayEnd: nextProps.onPlayEnd,
+      loop: nextProps.loop || 0
     };
   }
 
@@ -61,9 +62,12 @@ class GifPlayerContainer extends React.Component {
       actualGif: props.gif,
       actualStill: props.still,
       isToggle: !Boolean(props.isToggle),
-      onPlayEnd: props.onPlayEnd
+      onPlayEnd: props.onPlayEnd,
+      loop: props.loop || 0
     };
     this.updateId = -1;
+    this.loopCount = 0;
+    this.onPlayEnd = this.onPlayEnd.bind(this);
   }
 
   componentDidMount () {
@@ -112,12 +116,25 @@ class GifPlayerContainer extends React.Component {
       playing: !this.state.playing
     });
   }
+  onPlayEnd(data)
+  {
+    this.loopCount++;
+    if(this.props.onPlayEnd)
+    {
+       this.props.onPlayEnd({type:'playEnd', ms:this.superGif.get_duration_ms(), duration: this.superGif.get_duration(), frame: this.superGif.get_current_frame() });
+    }
+    if(this.state.loop>0 && this.loopCount>= this.state.loop)
+    {
+      this.toggle();
+    }
+  }
   onLoad(event)
   {
     var img = event.target;
     if(this.superGif){
         if(this.state.playing)
         {
+          this.loopCount = 0;
           this.superGif.play();
         }
         else
@@ -128,23 +145,13 @@ class GifPlayerContainer extends React.Component {
     }
     if (/.*\.gif/.test(img.src)) 
     {
-       this.superGif = new SuperGif({gif:img,show_progress_bar:false, on_end:()=>{
-           if(this.props.onPlayEnd)
-           {
-              this.props.onPlayEnd({type:'playEnd', ms:this.superGif.get_duration_ms(), duration: this.superGif.get_duration(), frame: this.superGif.get_current_frame() });
-           }
-       }});
-       this.superGif.load(()=>{
-          if(this.props.onPlayEnd)
-          {
-            this.props.onPlayEnd({ type:'loaded', ms:this.superGif.get_duration_ms(), duration: this.superGif.get_duration(), frame: this.superGif.get_current_frame() });
-          }
-       });
+       this.superGif = new SuperGif({gif:img,show_progress_bar:false, on_end: this.onPlayEnd});
+       this.superGif.load(this.onPlayEnd);
     }
   }
   render () {
     // extract these props but pass down the rest
-    const { autoplay, pauseRef, onTogglePlay, onPlayEnd, ...rest } = this.props;
+    const { autoplay, pauseRef, onTogglePlay, onPlayEnd, loop,  ...rest } = this.props;
     const { actualGif, actualStill, playing, isToggle } = this.state;
     return (
       <GifPlayer
@@ -170,7 +177,8 @@ GifPlayerContainer.propTypes = {
   pauseRef: PropTypes.func,
   onTogglePlay: PropTypes.func,
   isToggle: PropTypes.bool,
-  onPlayEnd: PropTypes.func
+  onPlayEnd: PropTypes.func,
+  loop: PropTypes.number
 };
 
 export default GifPlayerContainer;

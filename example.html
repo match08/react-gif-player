@@ -28,6 +28,7 @@
     <script>
       ReactDOM.render(
         React.createElement(GifPlayer, {
+          loop:0,// loop must >= 0
           gif: 'flip_the_frog.gif',
           still: 'flip_the_frog.jpg',
           onPlayEnd:function(data){
