@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import lifecyclesPoylfill from 'react-lifecycles-compat';
 
 import GifPlayer from './GifPlayer';
+import SuperGif from 'libgif';
 
 const preload = (src, callback) => {
   var img = new Image();
@@ -35,7 +36,7 @@ class GifPlayerContainer extends React.Component {
     if (prevGif === nextGif && prevStill === nextStill) {
       return null;
     }
-
+ 
     return {
       playing: nextGif && nextProps.autoplay && prevGif !== nextGif
         ? true
@@ -46,7 +47,8 @@ class GifPlayerContainer extends React.Component {
       actualStill: nextStill || prevGif !== nextGif
         ? nextStill
         : prevState.actualStill,
-      isToggle: nextProps.isToggle
+      isToggle: nextProps.isToggle,
+      onPlayEnd: nextProps.onPlayEnd
     };
   }
 
@@ -58,13 +60,13 @@ class GifPlayerContainer extends React.Component {
       providedStill: props.still,
       actualGif: props.gif,
       actualStill: props.still,
-      isToggle: !Boolean(props.isToggle)
+      isToggle: !Boolean(props.isToggle),
+      onPlayEnd: props.onPlayEnd
     };
     this.updateId = -1;
   }
 
   componentDidMount () {
-    console.log(this.state);
     if (typeof this.props.pauseRef === 'function') {
       this.props.pauseRef(() => this.setState({ playing: false }));
     }
@@ -78,7 +80,14 @@ class GifPlayerContainer extends React.Component {
       onTogglePlay(this.state.playing);
     }
   }
-
+  componentWillUnmount()
+  {
+    if(this.superGif)
+    {
+      this.superGif.pause();
+      this.superGif = null;
+    }
+  }
   updateImages (prevState = {}) {
     const { providedGif, providedStill } = this.state;
     if (
@@ -103,10 +112,34 @@ class GifPlayerContainer extends React.Component {
       playing: !this.state.playing
     });
   }
-
+  onLoad(event)
+  {
+    var img = event.target;
+    if(this.superGif){
+        if(this.state.playing)
+        {
+          this.superGif.play();
+        }
+        else
+        {
+          this.superGif.pause();
+        }
+        return;
+    }
+    if (/.*\.gif/.test(img.src)) 
+    {
+       this.superGif = new SuperGif({gif:img,show_progress_bar:false, on_end:()=>{
+           if(this.props.onPlayEnd)
+           {
+              this.props.onPlayEnd({ms:this.superGif.get_duration_ms(), duration: this.superGif.get_duration(), frame: this.superGif.get_current_frame() });
+           }
+       }});
+       this.superGif.load();
+    }
+  }
   render () {
     // extract these props but pass down the rest
-    const { autoplay, pauseRef, onTogglePlay, ...rest } = this.props;
+    const { autoplay, pauseRef, onTogglePlay, onPlayEnd, ...rest } = this.props;
     const { actualGif, actualStill, playing, isToggle } = this.state;
     return (
       <GifPlayer
@@ -117,6 +150,7 @@ class GifPlayerContainer extends React.Component {
         toggle={() => {
           isToggle && this.toggle();
         }}
+        onLoad={this.onLoad.bind(this)}
       />
     );
   }
@@ -130,7 +164,8 @@ GifPlayerContainer.propTypes = {
   autoplay: PropTypes.bool,
   pauseRef: PropTypes.func,
   onTogglePlay: PropTypes.func,
-  isToggle: PropTypes.bool
+  isToggle: PropTypes.bool,
+  onPlayEnd: PropTypes.func
 };
 
 export default GifPlayerContainer;

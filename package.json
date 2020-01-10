@@ -65,6 +65,7 @@
   },
   "homepage": "https://github.com/benwiley4000/react-gif-player#readme",
   "dependencies": {
+    "libgif": "0.0.3",
     "prop-types": "^15.7.2"
   }
 }

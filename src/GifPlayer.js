@@ -4,13 +4,13 @@ import classNames from 'classnames';
 
 import './GifPlayer.scss';
 
-const GifPlayer = ({ gif, still, playing, toggle, ...rest }) => (
+const GifPlayer = ({ gif, still, playing, toggle, onLoad, ...rest }) => (
   <div
     className={classNames('gif_player', { 'playing': playing })}
     onClick={toggle}
   >
     <div className="play_button" />
-    <img {...rest} src={playing ? (gif || still) : (still || gif)} />
+    <img onLoad={onLoad} {...rest} src={playing ? (gif || still) : (still || gif)} />
   </div>
 );
 

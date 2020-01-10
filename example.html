@@ -29,7 +29,10 @@
       ReactDOM.render(
         React.createElement(GifPlayer, {
           gif: 'flip_the_frog.gif',
-          still: 'flip_the_frog.jpg'
+          still: 'flip_the_frog.jpg',
+          onPlayEnd:function(data){
+            console.log(data);
+          }
         }),
         document.getElementById('gif_player_container')
       );
