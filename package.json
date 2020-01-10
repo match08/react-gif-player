@@ -10,7 +10,7 @@
     "build:uglifycss": "uglifycss dist/gifplayer.css > dist/gifplayer.min.css",
     "build:uglify": "npm run build:uglifyjs && npm run build:uglifycss",
     "build": "npm run build:clean && npm run build:umd && npm run build:uglify",
-    "dev": "rimraf dist && NODE_ENV=development webpack-dev-server",
+    "dev": "rimraf dist && cross-env NODE_ENV=development webpack-dev-server",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,30 +27,31 @@
   "author": "Ben Wiley",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
-    "@babel/preset-env": "^7.3.1",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
     "autoprefixer": "^6.5.1",
-    "babel-loader": "^8.0.5",
+    "babel-loader": "^8.0.6",
     "babel-preset-react": "^6.16.0",
-    "classnames": "^2.2.5",
-    "css-loader": "^2.1.0",
+    "classnames": "^2.2.6",
+    "cross-env": "^6.0.3",
+    "css-loader": "^2.1.1",
     "mini-css-extract-plugin": "^0.5.0",
     "minimist": "^1.2.0",
-    "node-sass": "^4.9.4",
+    "node-sass": "^4.13.0",
     "opn": "^4.0.2",
-    "portfinder": "^1.0.9",
+    "portfinder": "^1.0.25",
     "postcss-loader": "^3.0.0",
-    "react-lifecycles-compat": "^1.0.2",
-    "rimraf": "^2.5.4",
-    "sass-loader": "^7.1.0",
-    "uglify-js": "^3.4.9",
+    "react-lifecycles-compat": "^1.1.4",
+    "rimraf": "^2.7.1",
+    "sass-loader": "^7.3.1",
+    "uglify-js": "^3.7.4",
     "uglifycss": "0.0.28",
     "uglifyjs": "^2.4.11",
-    "webpack": "^4.29.0",
-    "webpack-cli": "^3.2.1",
-    "webpack-dev-server": "^3.1.14"
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   },
   "peerDependencies": {
     "react": "^15.0.0 || ^16.0.0"
@@ -64,6 +65,6 @@
   },
   "homepage": "https://github.com/benwiley4000/react-gif-player#readme",
   "dependencies": {
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.7.2"
   }
 }
