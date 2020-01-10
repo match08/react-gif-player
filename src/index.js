@@ -48,7 +48,7 @@ class GifPlayerContainer extends React.Component {
         ? nextStill
         : prevState.actualStill,
       isToggle: nextProps.isToggle,
-      onPlayEnd: nextProps.onPlayEnd || prevState.onPlayEnd
+      onPlayEnd: nextProps.onPlayEnd
     };
   }
 
@@ -131,10 +131,15 @@ class GifPlayerContainer extends React.Component {
        this.superGif = new SuperGif({gif:img,show_progress_bar:false, on_end:()=>{
            if(this.props.onPlayEnd)
            {
-              this.props.onPlayEnd({ms:this.superGif.get_duration_ms(), duration: this.superGif.get_duration(), frame: this.superGif.get_current_frame() });
+              this.props.onPlayEnd({type:'playEnd', ms:this.superGif.get_duration_ms(), duration: this.superGif.get_duration(), frame: this.superGif.get_current_frame() });
            }
        }});
-       this.superGif.load();
+       this.superGif.load(()=>{
+          if(this.props.onPlayEnd)
+          {
+            this.props.onPlayEnd({ type:'loaded', ms:this.superGif.get_duration_ms(), duration: this.superGif.get_duration(), frame: this.superGif.get_current_frame() });
+          }
+       });
     }
   }
   render () {

@@ -1419,7 +1419,7 @@ function (_React$Component) {
       actualGif: nextGif,
       actualStill: nextStill || prevGif !== nextGif ? nextStill : prevState.actualStill,
       isToggle: nextProps.isToggle,
-      onPlayEnd: nextProps.onPlayEnd || prevState.onPlayEnd
+      onPlayEnd: nextProps.onPlayEnd
     };
   };
 
@@ -1527,6 +1527,7 @@ function (_React$Component) {
         on_end: function on_end() {
           if (_this4.props.onPlayEnd) {
             _this4.props.onPlayEnd({
+              type: 'playEnd',
               ms: _this4.superGif.get_duration_ms(),
               duration: _this4.superGif.get_duration(),
               frame: _this4.superGif.get_current_frame()
@@ -1534,7 +1535,16 @@ function (_React$Component) {
           }
         }
       });
-      this.superGif.load();
+      this.superGif.load(function () {
+        if (_this4.props.onPlayEnd) {
+          _this4.props.onPlayEnd({
+            type: 'loaded',
+            ms: _this4.superGif.get_duration_ms(),
+            duration: _this4.superGif.get_duration(),
+            frame: _this4.superGif.get_current_frame()
+          });
+        }
+      });
     }
   };
 
