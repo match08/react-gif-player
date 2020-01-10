@@ -1419,7 +1419,7 @@ function (_React$Component) {
       actualGif: nextGif,
       actualStill: nextStill || prevGif !== nextGif ? nextStill : prevState.actualStill,
       isToggle: nextProps.isToggle,
-      onPlayEnd: nextProps.onPlayEnd
+      onPlayEnd: nextProps.onPlayEnd || prevState.onPlayEnd
     };
   };
 

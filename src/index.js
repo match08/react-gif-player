@@ -48,7 +48,7 @@ class GifPlayerContainer extends React.Component {
         ? nextStill
         : prevState.actualStill,
       isToggle: nextProps.isToggle,
-      onPlayEnd: nextProps.onPlayEnd
+      onPlayEnd: nextProps.onPlayEnd || prevState.onPlayEnd
     };
   }
 
