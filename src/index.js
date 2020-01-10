@@ -31,6 +31,7 @@ class GifPlayerContainer extends React.Component {
     const nextGif = nextProps.gif;
     const prevStill = prevState.providedStill;
     const nextStill = nextProps.still;
+
     if (prevGif === nextGif && prevStill === nextStill) {
       return null;
     }
@@ -44,7 +45,8 @@ class GifPlayerContainer extends React.Component {
       actualGif: nextGif,
       actualStill: nextStill || prevGif !== nextGif
         ? nextStill
-        : prevState.actualStill
+        : prevState.actualStill,
+      isToggle: nextProps.isToggle
     };
   }
 
@@ -55,12 +57,14 @@ class GifPlayerContainer extends React.Component {
       providedGif: props.gif,
       providedStill: props.still,
       actualGif: props.gif,
-      actualStill: props.still
+      actualStill: props.still,
+      isToggle: !Boolean(props.isToggle)
     };
     this.updateId = -1;
   }
 
   componentDidMount () {
+    console.log(this.state);
     if (typeof this.props.pauseRef === 'function') {
       this.props.pauseRef(() => this.setState({ playing: false }));
     }
@@ -103,14 +107,16 @@ class GifPlayerContainer extends React.Component {
   render () {
     // extract these props but pass down the rest
     const { autoplay, pauseRef, onTogglePlay, ...rest } = this.props;
-    const { actualGif, actualStill, playing } = this.state;
+    const { actualGif, actualStill, playing, isToggle } = this.state;
     return (
       <GifPlayer
         {...rest}
         gif={actualGif}
         still={actualStill}
         playing={playing}
-        toggle={() => this.toggle()}
+        toggle={() => {
+          isToggle && this.toggle();
+        }}
       />
     );
   }
@@ -123,7 +129,8 @@ GifPlayerContainer.propTypes = {
   still: PropTypes.string,
   autoplay: PropTypes.bool,
   pauseRef: PropTypes.func,
-  onTogglePlay: PropTypes.func
+  onTogglePlay: PropTypes.func,
+  isToggle: PropTypes.bool
 };
 
 export default GifPlayerContainer;
