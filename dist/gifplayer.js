@@ -1339,9 +1339,14 @@ var GifPlayer_GifPlayer = function GifPlayer(_ref) {
   }, external_root_React_commonjs_react_commonjs2_react_amd_react_default.a.createElement("div", {
     className: "play_button"
   }), external_root_React_commonjs_react_commonjs2_react_amd_react_default.a.createElement("img", _extends({
+    hidden: playing,
+    className: "still"
+  }, rest, {
+    src: still
+  })), external_root_React_commonjs_react_commonjs2_react_amd_react_default.a.createElement("img", _extends({
     onLoad: onLoad
   }, rest, {
-    src: playing ? gif || still : still || gif
+    src: gif
   })));
 };
 
@@ -1469,6 +1474,18 @@ function (_React$Component) {
     if (prevState.playing !== this.state.playing && typeof onTogglePlay === 'function') {
       onTogglePlay(this.state.playing);
     }
+
+    if (prevState.playing !== this.state.playing) {
+      if (this.state.playing) {
+        if (this.superGif) {
+          this.superGif.play();
+        }
+      } else {
+        if (this.superGif) {
+          this.superGif.pause();
+        }
+      }
+    }
   };
 
   _proto.componentWillUnmount = function componentWillUnmount() {
@@ -1544,11 +1561,12 @@ function (_React$Component) {
 
     if (/.*\.gif/.test(img.src)) {
       this.superGif = new libgif_default.a({
+        auto_play: this.state.playing,
         gif: img,
         show_progress_bar: false,
         on_end: this.onPlayEnd
       });
-      this.superGif.load(this.onPlayEnd);
+      this.superGif.load();
     }
   };
 

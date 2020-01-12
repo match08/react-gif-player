@@ -10,7 +10,8 @@ const GifPlayer = ({ gif, still, playing, toggle, onLoad, ...rest }) => (
     onClick={toggle}
   >
     <div className="play_button" />
-    <img onLoad={onLoad} {...rest} src={playing ? (gif || still) : (still || gif)} />
+    <img hidden={playing} className="still" {...rest} src={still} />
+    <img onLoad={onLoad} {...rest} src={gif} />
   </div>
 );
 

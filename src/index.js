@@ -83,6 +83,23 @@ class GifPlayerContainer extends React.Component {
     if (prevState.playing !== this.state.playing && typeof onTogglePlay === 'function') {
       onTogglePlay(this.state.playing);
     }
+    if(prevState.playing !== this.state.playing)
+    {
+      if(this.state.playing)
+      {
+        if(this.superGif)
+        {
+          this.superGif.play();
+        }
+      }
+      else
+      {
+        if(this.superGif)
+        {
+          this.superGif.pause();
+        }
+      }
+    }
   }
   componentWillUnmount()
   {
@@ -145,8 +162,8 @@ class GifPlayerContainer extends React.Component {
     }
     if (/.*\.gif/.test(img.src)) 
     {
-       this.superGif = new SuperGif({gif:img,show_progress_bar:false, on_end: this.onPlayEnd});
-       this.superGif.load(this.onPlayEnd);
+       this.superGif = new SuperGif({auto_play:this.state.playing,gif:img,show_progress_bar:false, on_end: this.onPlayEnd});
+       this.superGif.load();
     }
   }
   render () {

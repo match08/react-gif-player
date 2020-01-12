@@ -59,8 +59,13 @@ $gif_btn_text_content: 'GIF' !default;
     &::after {
       content: $gif_btn_text_content;
     }
+    z-index: 100;
   }
-
+  .still
+  {
+    position: absolute;
+    z-index: 99;
+  }
   &.playing .play_button {
     transform: translate(-50%, -50%) scale(0) rotate($gif_btn_playing_rotation);
     opacity: $gif_btn_playing_opacity;
