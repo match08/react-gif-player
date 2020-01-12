@@ -1344,6 +1344,7 @@ var GifPlayer_GifPlayer = function GifPlayer(_ref) {
   }, rest, {
     src: still
   })), external_root_React_commonjs_react_commonjs2_react_amd_react_default.a.createElement("img", _extends({
+    hidden: playing,
     onLoad: onLoad
   }, rest, {
     src: gif
@@ -1546,6 +1547,8 @@ function (_React$Component) {
   };
 
   _proto.onLoad = function onLoad(event) {
+    var _this4 = this;
+
     var img = event.target;
 
     if (this.superGif) {
@@ -1566,12 +1569,16 @@ function (_React$Component) {
         show_progress_bar: false,
         on_end: this.onPlayEnd
       });
-      this.superGif.load();
+      this.superGif.load(function (event) {
+        if (_this4.state.playing) {
+          _this4.onPlayEnd(event);
+        }
+      });
     }
   };
 
   _proto.render = function render() {
-    var _this4 = this;
+    var _this5 = this;
 
     // extract these props but pass down the rest
     var _this$props = this.props,
@@ -1592,7 +1599,7 @@ function (_React$Component) {
       still: actualStill,
       playing: playing,
       toggle: function toggle() {
-        isToggle && _this4.toggle();
+        isToggle && _this5.toggle();
       },
       onLoad: this.onLoad.bind(this)
     }));

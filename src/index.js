@@ -163,7 +163,12 @@ class GifPlayerContainer extends React.Component {
     if (/.*\.gif/.test(img.src)) 
     {
        this.superGif = new SuperGif({auto_play:this.state.playing,gif:img,show_progress_bar:false, on_end: this.onPlayEnd});
-       this.superGif.load();
+       this.superGif.load(event=>{
+          if(this.state.playing)
+          {
+            this.onPlayEnd(event);
+          }
+       });
     }
   }
   render () {
