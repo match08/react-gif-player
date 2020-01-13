@@ -1426,7 +1426,7 @@ function (_React$Component) {
       providedStill: nextStill,
       actualGif: nextGif,
       actualStill: nextStill || prevGif !== nextGif ? nextStill : prevState.actualStill,
-      isToggle: nextProps.isToggle,
+      isToggle: nextProps.istoggle === undefined ? false : nextProps.istoggle,
       onPlayEnd: nextProps.onPlayEnd,
       loop: nextProps.loop || 0
     };
@@ -1442,7 +1442,7 @@ function (_React$Component) {
       providedStill: props.still,
       actualGif: props.gif,
       actualStill: props.still,
-      isToggle: !Boolean(props.isToggle),
+      isToggle: Boolean(props.istoggle),
       onPlayEnd: props.onPlayEnd,
       loop: props.loop || 0
     };
@@ -1587,7 +1587,8 @@ function (_React$Component) {
         onTogglePlay = _this$props.onTogglePlay,
         onPlayEnd = _this$props.onPlayEnd,
         loop = _this$props.loop,
-        rest = src_objectWithoutPropertiesLoose(_this$props, ["autoplay", "pauseRef", "onTogglePlay", "onPlayEnd", "loop"]);
+        istoggle = _this$props.istoggle,
+        rest = src_objectWithoutPropertiesLoose(_this$props, ["autoplay", "pauseRef", "onTogglePlay", "onPlayEnd", "loop", "istoggle"]);
 
     var _this$state2 = this.state,
         actualGif = _this$state2.actualGif,
@@ -1599,7 +1600,9 @@ function (_React$Component) {
       still: actualStill,
       playing: playing,
       toggle: function toggle() {
-        isToggle && _this5.toggle();
+        if (isToggle) {
+          _this5.toggle();
+        }
       },
       onLoad: this.onLoad.bind(this)
     }));
@@ -1615,7 +1618,7 @@ src_GifPlayerContainer.propTypes = {
   autoplay: external_root_PropTypes_commonjs_prop_types_commonjs2_prop_types_amd_prop_types_default.a.bool,
   pauseRef: external_root_PropTypes_commonjs_prop_types_commonjs2_prop_types_amd_prop_types_default.a.func,
   onTogglePlay: external_root_PropTypes_commonjs_prop_types_commonjs2_prop_types_amd_prop_types_default.a.func,
-  isToggle: external_root_PropTypes_commonjs_prop_types_commonjs2_prop_types_amd_prop_types_default.a.bool,
+  istoggle: external_root_PropTypes_commonjs_prop_types_commonjs2_prop_types_amd_prop_types_default.a.bool,
   onPlayEnd: external_root_PropTypes_commonjs_prop_types_commonjs2_prop_types_amd_prop_types_default.a.func,
   loop: external_root_PropTypes_commonjs_prop_types_commonjs2_prop_types_amd_prop_types_default.a.number
 };

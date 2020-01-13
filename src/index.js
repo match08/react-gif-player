@@ -47,7 +47,7 @@ class GifPlayerContainer extends React.Component {
       actualStill: nextStill || prevGif !== nextGif
         ? nextStill
         : prevState.actualStill,
-      isToggle: nextProps.isToggle,
+      isToggle: nextProps.istoggle === undefined? false: nextProps.istoggle,
       onPlayEnd: nextProps.onPlayEnd,
       loop: nextProps.loop || 0
     };
@@ -61,7 +61,7 @@ class GifPlayerContainer extends React.Component {
       providedStill: props.still,
       actualGif: props.gif,
       actualStill: props.still,
-      isToggle: !Boolean(props.isToggle),
+      isToggle: Boolean(props.istoggle),
       onPlayEnd: props.onPlayEnd,
       loop: props.loop || 0
     };
@@ -173,7 +173,7 @@ class GifPlayerContainer extends React.Component {
   }
   render () {
     // extract these props but pass down the rest
-    const { autoplay, pauseRef, onTogglePlay, onPlayEnd, loop,  ...rest } = this.props;
+    const { autoplay, pauseRef, onTogglePlay, onPlayEnd, loop, istoggle, ...rest } = this.props;
     const { actualGif, actualStill, playing, isToggle } = this.state;
     return (
       <GifPlayer
@@ -182,7 +182,10 @@ class GifPlayerContainer extends React.Component {
         still={actualStill}
         playing={playing}
         toggle={() => {
-          isToggle && this.toggle();
+          if(isToggle)
+          {
+            this.toggle();
+          }
         }}
         onLoad={this.onLoad.bind(this)}
       />
@@ -198,7 +201,7 @@ GifPlayerContainer.propTypes = {
   autoplay: PropTypes.bool,
   pauseRef: PropTypes.func,
   onTogglePlay: PropTypes.func,
-  isToggle: PropTypes.bool,
+  istoggle: PropTypes.bool,
   onPlayEnd: PropTypes.func,
   loop: PropTypes.number
 };
